@@ -12,30 +12,30 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private FirebaseService firebaseService;
+	@Autowired
+	private FirebaseService firebaseService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
-        try {
-            String result = firebaseService.saveUser(user);
-            return ResponseEntity.ok("User registered successfully: " + result);
-        } catch (ExecutionException | InterruptedException e) {
-            return ResponseEntity.internalServerError().body("Error registering user: " + e.getMessage());
-        }
-    }
+	@PostMapping("/register")
+	public ResponseEntity<String> registerUser(@RequestBody User user) {
+		try {
+			String result = firebaseService.saveUser(user);
+			return ResponseEntity.ok("User registered successfully: " + result);
+		} catch (ExecutionException | InterruptedException e) {
+			return ResponseEntity.internalServerError().body("Error registering user: " + e.getMessage());
+		}
+	}
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable String userId) {
-        try {
-            User user = firebaseService.getUser(userId);
-            if (user != null) {
-                return ResponseEntity.ok(user);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+	@GetMapping("/{userId}")
+	public ResponseEntity<User> getUser(@PathVariable String userId) {
+		try {
+			User user = firebaseService.getUser(userId);
+			if (user != null) {
+				return ResponseEntity.ok(user);
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		} catch (ExecutionException | InterruptedException e) {
+			return ResponseEntity.internalServerError().build();
+		}
+	}
 }
