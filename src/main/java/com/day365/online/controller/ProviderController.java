@@ -13,40 +13,40 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/api/providers")
 public class ProviderController {
 
-    @Autowired
-    private FirebaseService firebaseService;
+	@Autowired
+	private FirebaseService firebaseService;
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerProvider(@RequestBody Provider provider) {
-        try {
-            String result = firebaseService.saveProvider(provider);
-            return ResponseEntity.ok("Provider registered successfully: " + result);
-        } catch (ExecutionException | InterruptedException e) {
-            return ResponseEntity.internalServerError().body("Error registering provider: " + e.getMessage());
-        }
-    }
+	@PostMapping("/register")
+	public ResponseEntity<String> registerProvider(@RequestBody Provider provider) {
+		try {
+			String result = firebaseService.saveProvider(provider);
+			return ResponseEntity.ok("Provider registered successfully: " + result);
+		} catch (ExecutionException | InterruptedException e) {
+			return ResponseEntity.internalServerError().body("Error registering provider: " + e.getMessage());
+		}
+	}
 
-    @GetMapping("/{providerId}")
-    public ResponseEntity<Provider> getProvider(@PathVariable String providerId) {
-        try {
-            Provider provider = firebaseService.getProvider(providerId);
-            if (provider != null) {
-                return ResponseEntity.ok(provider);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+	@GetMapping("/{providerId}")
+	public ResponseEntity<Provider> getProvider(@PathVariable String providerId) {
+		try {
+			Provider provider = firebaseService.getProvider(providerId);
+			if (provider != null) {
+				return ResponseEntity.ok(provider);
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		} catch (ExecutionException | InterruptedException e) {
+			return ResponseEntity.internalServerError().build();
+		}
+	}
 
-    @GetMapping("/service/{serviceType}")
-    public ResponseEntity<List<Provider>> getProvidersByService(@PathVariable String serviceType) {
-        try {
-            List<Provider> providers = firebaseService.getProvidersByService(serviceType);
-            return ResponseEntity.ok(providers);
-        } catch (ExecutionException | InterruptedException e) {
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+	@GetMapping("/service/{serviceType}")
+	public ResponseEntity<List<Provider>> getProvidersByService(@PathVariable String serviceType) {
+		try {
+			List<Provider> providers = firebaseService.getProvidersByService(serviceType);
+			return ResponseEntity.ok(providers);
+		} catch (ExecutionException | InterruptedException e) {
+			return ResponseEntity.internalServerError().build();
+		}
+	}
 }
