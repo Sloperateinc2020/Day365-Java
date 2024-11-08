@@ -11,14 +11,14 @@ import java.util.concurrent.ExecutionException;
 public class TopServicesService {
 
     @Autowired
-    private LocationFirebaseService locationFirebaseService;
+    private ServicesFirebaseService servicesFirebaseService;
 
     public TopServiceModel addTopService(TopServiceModel topService) throws ExecutionException, InterruptedException {
-        locationFirebaseService.saveTopService(topService);
+        servicesFirebaseService.saveTopService(topService);
         return topService;
     }
 
     public List<TopServiceModel> getAllTopServices() throws ExecutionException, InterruptedException {
-        return locationFirebaseService.getAllTopServices();
+        return servicesFirebaseService.getAllTopServices();
     }
 }
