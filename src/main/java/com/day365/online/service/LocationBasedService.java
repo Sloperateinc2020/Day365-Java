@@ -11,15 +11,15 @@ import java.util.concurrent.ExecutionException;
 public class LocationBasedService {
 
     @Autowired
-    private LocationFirebaseService locationFirebaseService;
+    private ServicesFirebaseService servicesFirebaseService;
 
     public LocationBasedServiceModel addService(LocationBasedServiceModel service) throws ExecutionException, InterruptedException {
-        locationFirebaseService.saveService(service);
+        servicesFirebaseService.saveService(service);
         return service;
     }
 
     public List<LocationBasedServiceModel> getServicesByFilter(String city, String state, String pincode) throws ExecutionException, InterruptedException {
         // Retrieve services from Firestore by filtering using city, state, and pincode
-        return locationFirebaseService.getServicesByFilter(city, state, pincode);
+        return servicesFirebaseService.getServicesByFilter(city, state, pincode);
     }
 }
