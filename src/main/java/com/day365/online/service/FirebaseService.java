@@ -22,29 +22,29 @@ public class FirebaseService {
     private static final String BOOKINGS_COLLECTION = "bookings";
     
     @Autowired
-    private Firestore dbFirestore;
+    private Firestore firestore;
 
     public String saveUser(User user) throws ExecutionException, InterruptedException {
         
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(USERS_COLLECTION).document(user.getId()).set(user);
+        ApiFuture<WriteResult> collectionsApiFuture = firestore.collection(USERS_COLLECTION).document(user.getId()).set(user);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
     public String saveProvider(Provider provider) throws ExecutionException, InterruptedException {
         
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(PROVIDERS_COLLECTION).document(provider.getId()).set(provider);
+        ApiFuture<WriteResult> collectionsApiFuture = firestore.collection(PROVIDERS_COLLECTION).document(provider.getId()).set(provider);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
     public String saveBooking(Booking booking) throws ExecutionException, InterruptedException {
         
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(BOOKINGS_COLLECTION).document(booking.getBookingId()).set(booking);
+        ApiFuture<WriteResult> collectionsApiFuture = firestore.collection(BOOKINGS_COLLECTION).document(booking.getBookingId()).set(booking);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
 
     public User getUser(String userId) throws ExecutionException, InterruptedException {
         
-        DocumentReference documentReference = dbFirestore.collection(USERS_COLLECTION).document(userId);
+        DocumentReference documentReference = firestore.collection(USERS_COLLECTION).document(userId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
         return document.exists() ? document.toObject(User.class) : null;
@@ -52,7 +52,7 @@ public class FirebaseService {
 
     public Provider getProvider(String providerId) throws ExecutionException, InterruptedException {
         
-        DocumentReference documentReference = dbFirestore.collection(PROVIDERS_COLLECTION).document(providerId);
+        DocumentReference documentReference = firestore.collection(PROVIDERS_COLLECTION).document(providerId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
         return document.exists() ? document.toObject(Provider.class) : null;
@@ -60,7 +60,7 @@ public class FirebaseService {
 
     public Booking getBooking(String bookingId) throws ExecutionException, InterruptedException {
         
-        DocumentReference documentReference = dbFirestore.collection(BOOKINGS_COLLECTION).document(bookingId);
+        DocumentReference documentReference = firestore.collection(BOOKINGS_COLLECTION).document(bookingId);
         ApiFuture<DocumentSnapshot> future = documentReference.get();
         DocumentSnapshot document = future.get();
         return document.exists() ? document.toObject(Booking.class) : null;
@@ -68,7 +68,7 @@ public class FirebaseService {
 
     public List<Provider> getProvidersByService(String serviceType) throws ExecutionException, InterruptedException {
         
-        ApiFuture<QuerySnapshot> future = dbFirestore.collection(PROVIDERS_COLLECTION)
+        ApiFuture<QuerySnapshot> future = firestore.collection(PROVIDERS_COLLECTION)
                 .whereArrayContains("services", serviceType)
                 .get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -81,7 +81,7 @@ public class FirebaseService {
 
     public List<Booking> getBookingsByUser(String userId) throws ExecutionException, InterruptedException {
         
-        ApiFuture<QuerySnapshot> future = dbFirestore.collection(BOOKINGS_COLLECTION)
+        ApiFuture<QuerySnapshot> future = firestore.collection(BOOKINGS_COLLECTION)
                 .whereEqualTo("userId", userId)
                 .get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -94,7 +94,7 @@ public class FirebaseService {
 
     public List<Booking> getBookingsByProvider(String providerId) throws ExecutionException, InterruptedException {
         
-        ApiFuture<QuerySnapshot> future = dbFirestore.collection(BOOKINGS_COLLECTION)
+        ApiFuture<QuerySnapshot> future = firestore.collection(BOOKINGS_COLLECTION)
                 .whereEqualTo("providerId", providerId)
                 .get();
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
@@ -107,7 +107,7 @@ public class FirebaseService {
 
     public String updateBookingStatus(String bookingId, String status) throws ExecutionException, InterruptedException {
         
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection(BOOKINGS_COLLECTION).document(bookingId)
+        ApiFuture<WriteResult> collectionsApiFuture = firestore.collection(BOOKINGS_COLLECTION).document(bookingId)
                 .update("status", status);
         return collectionsApiFuture.get().getUpdateTime().toString();
     }
